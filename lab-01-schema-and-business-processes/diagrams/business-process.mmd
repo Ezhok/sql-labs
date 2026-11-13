@@ -1,0 +1,21 @@
+flowchart TD
+    A["Потребность в сырье<br/>raw_materials<br/>material_id, material_name, min_stock"]
+    B["Заказ поставщику<br/>purchase_orders<br/>supplier_id, employee_id, order_date, expected_date, status"]
+    C["Позиции заказа<br/>purchase_order_items<br/>material_id, quantity, unit_price"]
+    D["Приёмка и контроль качества<br/>purchase_order_items<br/>received_qty, received_date, quality_status"]
+    E["Хранение сырья<br/>Отдельная таблица остатков не выявлена"]
+    F["Списание сырья<br/>material_writeoffs<br/>material_id, quantity, reason, amount"]
+    G["Производственная партия<br/>production_batches<br/>product_id, line_id, operator_id, batch_date, shift"]
+    H["Нормы рецептуры<br/>recipes<br/>product_id, material_id, qty_per_unit"]
+    I["Фактический расход<br/>material_consumption<br/>batch_id, material_id, quantity"]
+    J["Готовая продукция<br/>products<br/>product_id, product_name, base_price, standard_cost"]
+    K["Потери производства<br/>Брак: defect_qty<br/>Простой: equipment_downtime"]
+
+    A --> B --> C --> D --> E --> G
+    E --> F
+    G --> H
+    G --> I
+    H --> I
+    G --> J
+    G --> K
+    J --> L["Эстафета команде А<br/>order_items.product_id"]
